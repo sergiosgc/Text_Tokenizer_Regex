@@ -25,9 +25,9 @@
     },
     "autoload":
     {
-        "psr-4":
+        "psr-0":
         {
-            "sergiosgc\\Text_Tokenizer_Regex\\": "lib/"
+            "sergiosgc\\": "lib/"
         }
     }
 }

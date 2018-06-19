@@ -1,8 +1,8 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
-namespace sergiosgc\Text_Tokenizer_Regex;
+namespace sergiosgc;
 
-class Text_Tokenizer_Regex implements \sergiosgc\Text_Tokenizer\Text_Tokenizer
+class Text_Tokenizer_Regex implements \sergiosgc\Text_Tokenizer
 {
     const SELECTFIRST = 1;
     const SELECTLONGEST = 2;
@@ -83,11 +83,10 @@ class Text_Tokenizer_Regex implements \sergiosgc\Text_Tokenizer\Text_Tokenizer
             if (extension_loaded('Text_Tokenizer_Regex_Matcher_Ext')) {
                 $this->_matcher = new Text_Tokenizer_Regex_Matcher_Ext();
             } else {
-                require_once('Text/Tokenizer/Regex/Matcher/Php.php');
                 $this->_matcher = new Text_Tokenizer_Regex_Matcher_Php();
             }
             $this->_matcher->setSelectionCriteria(self::SELECTLONGEST);
-            $this->_matcher->setInput(&$this->_input);
+            $this->_matcher->setInput($this->_input);
             foreach ($this->_regex as $key => $item) {
                 $this->_matcher->addRegex($item['regex']);
             }

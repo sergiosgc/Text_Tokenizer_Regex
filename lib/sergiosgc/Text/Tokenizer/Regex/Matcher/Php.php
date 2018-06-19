@@ -1,6 +1,6 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
-namespace sergiosgc\Text_Tokenizer_Regex;
+namespace sergiosgc;
 
 class Text_Tokenizer_Regex_Matcher_Php implements Text_Tokenizer_Regex_Matcher
 {
@@ -36,9 +36,9 @@ class Text_Tokenizer_Regex_Matcher_Php implements Text_Tokenizer_Regex_Matcher
      *
      * @param string input
      */
-    public function setInput($input)
+    public function setInput(&$input)
     {
-        $this->_input = $input;
+        $this->_input = &$input;
         $this->_cursor = 0;
     }
     /* }}} */
