@@ -1,5 +1,7 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
+namespace sergiosgc\Text_Tokenizer_Regex;
+
 interface Text_Tokenizer_Regex_Matcher
 {
     /* setInput {{{ */

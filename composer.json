@@ -1,0 +1,33 @@
+{
+    "name": "sergiosgc/Text_Tokenizer_Regex",
+    "description": "Text_Tokenizer_Regexp is a text tokenizer, following the Text_Tokenizer interface that uses a set of perl-compatible regular expressions to tokenize the input text.",
+    "keywords": ["parser", "tokenizer"],
+    "type": "library",
+    "license": "GPLv3",
+    "homepage": "https://github.com/sergiosgc/Text_Tokenizer_Regex",
+    "repositories": [
+        {
+            "url": "https://github.com/sergiosgc/Text_Tokenizer.git",
+            "type": "git"
+        }
+    ],
+    "authors":
+    [
+        {
+            "name": "Sérgio Carvalho",
+            "homepage": "https://github.com/sergiosgc"
+        }
+    ],
+    "require":
+    {
+        "php": ">=7.0.0",
+        "sergiosgc/Text_Tokenizer": "dev-master"
+    },
+    "autoload":
+    {
+        "psr-4":
+        {
+            "sergiosgc\\Text_Tokenizer_Regex\\": "lib/"
+        }
+    }
+}

@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
-require_once('Text/Tokenizer/Regex.php');
-class CharacterLexer extends Text_Tokenizer_Regex
+
+class CharacterLexer extends \sergiosgc\Text_Tokenizer_Regex\Text_Tokenizer_Regex
 {
     /*     __construct {{{ */
     /**

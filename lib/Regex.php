@@ -1,8 +1,8 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
-require_once('Text/Tokenizer.php');
-require_once('Text/Tokenizer/Token.php');
-class Text_Tokenizer_Regex implements Text_Tokenizer
+namespace sergiosgc\Text_Tokenizer_Regex;
+
+class Text_Tokenizer_Regex implements \sergiosgc\Text_Tokenizer\Text_Tokenizer
 {
     const SELECTFIRST = 1;
     const SELECTLONGEST = 2;
