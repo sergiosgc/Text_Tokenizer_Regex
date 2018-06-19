@@ -2,13 +2,10 @@
 Default regexp tokenizer, simple regexp, match first
 --FILE--
 <?php
-ini_set('include_path', sprintf('%s:%s:%s', 
-    realpath(dirname(__FILE__) . '/../'),
-    realpath(dirname(__FILE__) . '/../../Text_Tokenizer'),
-    ini_get('include_path')));
-require_once(dirname(__FILE__) . '/lexers/CharacterLexer.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
+require_once(__DIR__ . '/lexers/CharacterLexer.php');
 $lexer = new CharacterLexer(file_get_contents(dirname(__FILE__) . '/inputs/abcd.txt'));
-$lexer->setSelectionCriteria(Text_Tokenizer_Regex::SELECTFIRST);
+$lexer->setSelectionCriteria(\sergiosgc\Text_Tokenizer_Regex::SELECTFIRST);
 while ($token = $lexer->getNextToken()) {
     printf("Lexer output token {%s, '%s'}\n", $token->getId(), addcslashes($token->getValue(), "\0..\37!@\177..\377"));
 }

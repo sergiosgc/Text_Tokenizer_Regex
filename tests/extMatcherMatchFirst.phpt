@@ -2,10 +2,8 @@
 Extension-based regexp tokenizer, simple regexp, match first
 --FILE--
 <?php
-ini_set('include_path', sprintf('%s:%s:%s', 
-    realpath(dirname(__FILE__) . '/../'),
-    realpath(dirname(__FILE__) . '/../../Text_Tokenizer'),
-    ini_get('include_path')));
+require_once(__DIR__ . '/../vendor/autoload.php');
+require_once(__DIR__ . '/lexers/CharacterLexer.php');
 require_once(dirname(__FILE__) . '/lexers/CharacterLexer.php');
 if (!extension_loaded('Text_Tokenizer_Regex_Matcher_Ext')) dl('Text_Tokenizer_Regex_Matcher_Ext.so');
 $lexer = new CharacterLexer(file_get_contents(dirname(__FILE__) . '/inputs/abcd.txt'), new Text_Tokenizer_Regex_Matcher_Ext());
