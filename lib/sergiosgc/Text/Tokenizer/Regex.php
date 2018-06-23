@@ -36,6 +36,7 @@ class Text_Tokenizer_Regex implements \sergiosgc\Text_Tokenizer
      *  - A callback function to process the match and return the token data (defaults to returning the matched text)
      * The callback function itself can be one of:
      *  - A valid function name as a string
+     *  - A valid named submatch as a string, in the form "<submatch_name>"
      *  - A valid non static object function name as an array (object, string)
      *  - A static class function name as an array (string, string)
      *  - An integer, referencing a submatch to be returned as the token data
@@ -48,9 +49,9 @@ class Text_Tokenizer_Regex implements \sergiosgc\Text_Tokenizer
     {
         if (preg_match($regex, '') === FALSE) throw new Exception(sprintf('Invalid regular expression: \'%s\'', $regex));
         if (is_null($tokenid)) $tokenid = count($this->_regex);
-        if (!is_null($callback) && ((int) $callback) == $callback) $callback = (int) $callback;
+        if (!is_null($callback) && ((string) ((int) $callback)) == ((string) $callback)) $callback = (int) $callback;
         if (!is_null($callback) && !is_int($callback) && !is_string($callback) && !is_array($callback)) throw new Exception('Callback must be either an integer, or a function representing string/array');
-        if (is_string($callback) && !function_exists($callback)) throw new Exception('Function referenced by callback does not exist');
+        if (is_string($callback) && 0 == preg_match('_^<.*>$_', $callback) && !function_exists($callback)) throw new \Exception('Function referenced by callback does not exist');
         unset($this->_compoundregex);
         $this->getMatcher()->addRegex($regex);
         $this->_regex[] = array(
@@ -155,20 +156,26 @@ class Text_Tokenizer_Regex implements \sergiosgc\Text_Tokenizer
     {
         $token = $this->getMatcher()->match();
         if ($token === false) return false;
+        $this->getMatcher()->consume(strlen($token['value']));
+        $this->_cursor += strlen($token['value']);
+
         $regex =& $this->_regex[$token['index']];
+        $matches = array();
         if (is_int($regex['callback'])) { // Extract submatch as token value
-            $matches = array();
-            if (!preg_match($regex['regex'], $match, $matches)) throw new Exception('Unexpected regex mismatch. Compound matched but singular regex did not.');
-            if (!array_key_exists($regex['callback'] + 1, $matches)) throw new Exception(sprintf('Callback required submatch %d but there are only %d submatches. Matching regex \'%s\' on string \'%s\'.', $regex['callback'], count($matches) - 1, $regex['regex'], $match));
+            if (!preg_match($regex['regex'], $token['value'], $matches)) throw new \Exception('Unexpected regex mismatch. Compound matched but singular regex did not.');
+            if (is_int($regex['callback']) && !array_key_exists($regex['callback'] + 1, $matches)) throw new Exception(sprintf('Callback required submatch %d but there are only %d submatches. Matching regex \'%s\' on string \'%s\'.', $regex['callback'], count($matches) - 1, $regex['regex'], $match));
             $token['value'] = $matches[$regex['callback'] + 1];
+        } elseif (is_string($regex['callback']) && preg_match('_^<(.*)>$_', $regex['callback'], $matches)) {
+            $namedMatch = $matches[1];
+            if (!preg_match($regex['regex'], $token['value'], $matches)) throw new \Exception('Unexpected regex mismatch. Compound matched but singular regex did not.');
+            if (!array_key_exists($namedMatch, $matches)) throw new \Exception(sprintf('Named submatch "%s" requested by token "%s" regex "%s" does not exist', $namedMatch, $regex['token'], $regex['regex']));
+            $token['value'] = $matches[$namedMatch];
         } elseif (!is_null($regex['callback'])) { // Use callback function to calc token value
             $token['value'] = call_user_func($regex['callback'], $token['value'], $regex['regex']);
         }
         $token['token'] = $regex['token'];
         unset($token['index']);
-        $this->getMatcher()->consume(strlen($token['value']));
-        $this->_cursor += strlen($token['value']);
-//        print("Read token '" . $token['token'] . "'\n");
+        if (!is_null($this->_eof) && $token['token'] == $this->_eof) return false;
         return new Text_Tokenizer_Token($token['token'], $token['value']);
     }
     /* }}} */
