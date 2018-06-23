@@ -17,6 +17,12 @@ class Text_Tokenizer_Regex implements \sergiosgc\Text_Tokenizer
         if (!is_null($matcher)) $this->setMatcher($matcher);
     }
     /* }}} */
+    /* EOFToken field {{{ */
+    protected $_eof = null;
+    public function setEOFToken($id) {
+        $this->_eof = $id;
+    }
+    /* }}} */
     /* regex field {{{ */
     /** Regex array
      */
